@@ -17,7 +17,7 @@ public class Card : MonoBehaviour {
 
 	
 	// property
-	public bool faceUP {
+	public bool faceUp {
 		get {
 			return (!back.activeSelf);
 		}		
