@@ -113,6 +113,19 @@ public class Prospector : MonoBehaviour {
                 break;
             case CardState.tableau:
                 // Clicking a card in the tableau will check if it's a valid play
+                bool validMatch = true;
+                if (!cd.faceUp) {
+                    // If the card is face-down, it's not valid
+                    validMatch = false;
+                }
+                if (!AdjacentRank(cd, target)) {
+                    // If it's not an adjacent rank, it's not valid
+                    validMatch = false;
+                }
+                if (!validMatch) return; // return if not valid
+                                         // Yay! It's a valid card.
+                tableau.Remove(cd); // Remove it from the tableau List
+                MoveToTarget(cd);   // Make it the target card
                 break;
         }
     }
@@ -173,4 +186,20 @@ public class Prospector : MonoBehaviour {
         }
     }
 
+    // Return true if the two cards are adjacent in rank (A & K wrap around)
+    public bool AdjacentRank(CardProspector c0, CardProspector c1) {
+        // If either card is face-down, it's not adjacent.
+        if (!c0.faceUp || !c1.faceUp) return (false);
+
+        // If they are 1 apart, they are adjacent
+        if (Mathf.Abs(c0.rank - c1.rank) == 1) {
+            return (true);
+        }
+        // If one is A and the other King, they're adjacent
+        if (c0.rank == 1 && c1.rank == 13) return (true);
+        if (c0.rank == 13 && c1.rank == 1) return (true);
+
+        // Otherwise, return false
+        return (false);
+    }
 }
