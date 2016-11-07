@@ -22,11 +22,31 @@ public class CardProspector : Card { // Make sure CardProspector extends Card
     // The SlotDef class stores information pulled in from the LayoutXML <slot>
     public SlotDef slotDef;
 
+    private bool _gold = false;
+
     // This allows the card to react to being clicked
     override public void OnMouseUpAsButton() {
         // Call the CardClicked method on the Prospector singleton
         Prospector.S.CardClicked(this);
         // Also call the base class (Card.cs) version of this method
         base.OnMouseUpAsButton();
+    }
+
+    public bool gold {
+        get {
+            return _gold;
+        }
+        set {
+            if (_gold != value) {
+                if (value) {
+                    GetComponent<SpriteRenderer>().sprite = deck.cardFrontGold;
+                    transform.Find("back").gameObject.GetComponent<SpriteRenderer>().sprite = deck.cardBackGold;
+                } else {
+                    GetComponent<SpriteRenderer>().sprite = deck.cardFront;
+                    transform.Find("back").gameObject.GetComponent<SpriteRenderer>().sprite = deck.cardBack;
+                }
+            }
+            _gold = value;
+        }
     }
 }

@@ -16,7 +16,11 @@ public class FloatingScore : MonoBehaviour {
     public FSState state = FSState.idle;
     [SerializeField]
     private int _score = 0; // The score field
-    public string scoreString;
+    [SerializeField]
+    private int _mult = 1; // The current multiplier
+
+    public string scoreString="";
+    public string multString="";
 
     // The score property also sets scoreString when set
     public int score {
@@ -26,7 +30,22 @@ public class FloatingScore : MonoBehaviour {
         set {
             _score = value;
             scoreString = Utils.AddCommasToNumber(_score);
-            GetComponent<Text>().text = scoreString;
+            GetComponent<Text>().text = scoreString+multString;
+        }
+    }
+
+    public int mult {
+        get {
+            return (_mult);
+        }
+        set {
+            _mult = value;
+            if (_mult != 1) {
+                multString = " x "+Utils.AddCommasToNumber(_mult);
+            } else {
+                multString = "";
+            }
+            GetComponent<Text>().text = scoreString + multString;
         }
     }
 
@@ -70,7 +89,8 @@ public class FloatingScore : MonoBehaviour {
     public void FSCallback(FloatingScore fs) {
         // When this callback is called by SendMessage,
         //  add the score from the calling FloatingScore
-        score += fs.score;
+        score = score + fs.score;
+        mult = mult * fs.mult;
     }
 
     // Update is called once per frame

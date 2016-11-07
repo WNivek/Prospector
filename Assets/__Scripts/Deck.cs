@@ -152,9 +152,9 @@ public class Deck : MonoBehaviour {
 		// temp variables
 		Sprite tS = null;
 		GameObject tGO = null;
-		SpriteRenderer tSR = null;  // so tempted to make a D&D ref here...
-		
-		for (int i=0; i<cardNames.Count; i++) {
+		SpriteRenderer tSR = null;  // Wizards of the Coast stopped using the TSR brand around 2000...
+
+        for (int i=0; i<cardNames.Count; i++) {
 			GameObject cgo = Instantiate(prefabCard) as GameObject;
 			cgo.transform.parent = deckAnchor;
 			Card card = cgo.GetComponent<Card>();
@@ -251,6 +251,7 @@ public class Deck : MonoBehaviour {
 			card.faceUp = true;
 			
 			cards.Add (card);
+            card.deck = this;
 		} // for all the Cardnames	
 	} // makeCards
 	
@@ -288,5 +289,5 @@ public class Deck : MonoBehaviour {
 	 	//MAGIC!
 	 	oCards = tCards;
 	 }
-	
+
 } // Deck class

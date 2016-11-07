@@ -21,6 +21,8 @@ public class Prospector : MonoBehaviour {
 
     public float reloadDelay = 1f; // The delay between rounds
 
+    public float goldCardChance = 0.1f;
+
     public Vector3 fsPosMid = new Vector3(0.5f, 0.90f, 0);
     public Vector3 fsPosRun = new Vector3(0.5f, 0.75f, 0);
     public Vector3 fsPosMid2 = new Vector3(0.5f, 0.5f, 0);
@@ -46,6 +48,7 @@ public class Prospector : MonoBehaviour {
     // Fields to track score info
     public int chain = 0; // of cards in this run
     public int scoreRun = 0;
+    public int multRun = 1;
     public int score = 0;
     public FloatingScore fsRun;
 
@@ -162,6 +165,11 @@ public class Prospector : MonoBehaviour {
 
             cp.SetSortingLayerName(tSD.layerName); // Set the sorting layers
 
+            if (Random.value < goldCardChance) {
+                // Turn this card into a Gold Card
+                cp.gold = true;
+            }
+
             tableau.Add(cp); // Add this CardProspector to the List<> tableau
         }
 
@@ -211,7 +219,8 @@ public class Prospector : MonoBehaviour {
                 MoveToTarget(cd);   // Make it the target card
                 SetTableauFaces();  // Update tableau card face-ups
 
-                ScoreManager(ScoreEvent.mine);
+                if (cd.gold) ScoreManager(ScoreEvent.mineGold);
+                else ScoreManager(ScoreEvent.mine);
                 break;
         }
         // Check to see whether the game is over or not
@@ -351,15 +360,18 @@ public class Prospector : MonoBehaviour {
     // ScoreManager handles all of the scoring
     void ScoreManager(ScoreEvent sEvt) {
         List<Vector3> fsPts;
-
+        bool gold = false; // are gold cards involved?
+        
         switch (sEvt) {
             // Same things need to happen whether it's a draw, a win, or a loss
             case ScoreEvent.draw: // Drawing a card
             case ScoreEvent.gameWin: // Won the round
             case ScoreEvent.gameLoss: // Lost the round
+                gold = (multRun > 1);
                 chain = 0;         // resets the score chain
-                score += scoreRun; // add scoreRun to total score
+                score += scoreRun * multRun; // add scoreRun to total score
                 scoreRun = 0;      // reset scoreRun
+                multRun = 1;
                 // Add fsRun to the _Scoreboard score
                 if (fsRun != null) {
                     // Create points for the Bezier curve
@@ -367,6 +379,8 @@ public class Prospector : MonoBehaviour {
                     fsPts.Add(fsPosRun);
                     fsPts.Add(fsPosMid2);
                     fsPts.Add(fsPosEnd);
+                    fsRun.score = fsRun.score * fsRun.mult;
+                    fsRun.mult = 1;
                     fsRun.reportFinishTo = Scoreboard.S.gameObject;
                     fsRun.Init(fsPts, 0, 1);
                     // Also adjust the fontSize
@@ -374,6 +388,10 @@ public class Prospector : MonoBehaviour {
                     fsRun = null; // Clear fsRun so it's created again
                 }
                 break;
+            case ScoreEvent.mineGold:
+                multRun *= 2;
+                gold = true;
+                goto case ScoreEvent.mine; // Apparently C# got rid of case fall-through?
             case ScoreEvent.mine: // Remove a mine card
                 chain++;           // increase the score chain
                 scoreRun += chain; // add score for this card to run
@@ -387,7 +405,7 @@ public class Prospector : MonoBehaviour {
                 fsPts.Add(p0);
                 fsPts.Add(fsPosMid);
                 fsPts.Add(fsPosRun);
-                fs = Scoreboard.S.CreateFloatingScore(chain, fsPts);
+                fs = Scoreboard.S.CreateFloatingScore(chain, gold?2:1, fsPts);
                 fs.fontSizes = new List<float>(new float[] { 4, 50, 28 });
                 if (fsRun == null) {
                     fsRun = fs;
@@ -429,7 +447,5 @@ public class Prospector : MonoBehaviour {
                 break;
         }
     }
-
-
 
 }

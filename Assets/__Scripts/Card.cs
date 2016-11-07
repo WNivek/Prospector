@@ -13,7 +13,9 @@ public class Card : MonoBehaviour {
 	public List<GameObject> pipGOs = new List<GameObject>();
 	
 	public GameObject back;     // back of card;
-	public CardDefinition def;  // from DeckXML.xml		
+	public CardDefinition def;  // from DeckXML.xml
+
+    public Deck deck;
 
     // List of the SpriteRenderer Components of this GameObject and its children
     public SpriteRenderer[] spriteRenderers;
