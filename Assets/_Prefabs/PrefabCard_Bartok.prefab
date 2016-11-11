@@ -10,10 +10,10 @@ GameObject:
   - 4: {fileID: 400000}
   - 212: {fileID: 21200000}
   - 65: {fileID: 6500000}
-  - 114: {fileID: 114000012313560868}
   - 54: {fileID: 54000011833912580}
+  - 114: {fileID: 114000011362058140}
   m_Layer: 0
-  m_Name: PrefabCard
+  m_Name: PrefabCard_Bartok
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,7 +103,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114000012313560868
+--- !u!114 &114000011362058140
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -111,7 +111,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64d613f092f9de444b446e1674838fff, type: 3}
+  m_Script: {fileID: 11500000, guid: 268dd3accb7da2e4a940e246c51e654e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   suit: 
@@ -128,15 +128,8 @@ MonoBehaviour:
   deck: {fileID: 0}
   spriteRenderers: []
   state: 0
-  hiddenBy: []
-  layoutID: 0
-  slotDef:
-    x: 0
-    y: 0
-    faceUp: 0
-    layerName: Default
-    layerID: 0
-    id: 0
-    hiddenBy: 
-    type: slot
-    stagger: {x: 0, y: 0}
+  bezierPts: []
+  bezierRots: []
+  timeStart: 0
+  timeDuration: 0
+  reportFinishTo: {fileID: 0}
