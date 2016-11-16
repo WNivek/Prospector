@@ -31,6 +31,11 @@ public class CardBartok : Card {
 	public string eventualSortLayer;
 
 	public GameObject reportFinishTo = null;
+	public Player callbackPlayer = null;
+
+	void Awake() {
+		callbackPlayer = null;
+	}
 
 	public void MoveTo(Vector3 ePos, Quaternion eRot) {
 
@@ -88,6 +93,11 @@ public class CardBartok : Card {
 					if (reportFinishTo != null) {
 						reportFinishTo.SendMessage("CBCallback", this);
 						reportFinishTo = null;
+					} else if (callbackPlayer != null) {
+						// If there's a callback Player
+						// then call CBCallback directly on the Player
+						callbackPlayer.CBCallback(this);
+						callbackPlayer = null;
 					} else {
 						// no-op
 					}
@@ -114,5 +124,11 @@ public class CardBartok : Card {
 		}
 	}
 
-
+	// This allows the card to react to being clicked
+	override public void OnMouseUpAsButton() {
+		// Call the CardClicked method on the Bartok singleton
+		Bartok.S.CardClicked(this);
+		// Also call the base class (Card.cs) version of this method
+		base.OnMouseUpAsButton();
+	}
 }
