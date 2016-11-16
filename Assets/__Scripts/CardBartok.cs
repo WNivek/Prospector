@@ -55,7 +55,7 @@ public class CardBartok : Card {
 		MoveTo(ePos, Quaternion.identity);
 	}
 
-	void Uprate() {
+	void Update() {
 		switch (state) {
 			case CBState.toHand:
 			case CBState.toTarget:
@@ -81,7 +81,6 @@ public class CardBartok : Card {
 					transform.rotation = bezierRots[bezierRots.Count - 1];
 
 					timeStart = 0;
-
 
 					if (reportFinishTo != null) {
 						reportFinishTo.SendMessage("CBCallback", this);
