@@ -27,6 +27,9 @@ public class CardBartok : Card {
 	public float timeStart;
 	public float timeDuration;
 
+	public int eventualSortOrder;
+	public string eventualSortLayer;
+
 	public GameObject reportFinishTo = null;
 
 	public void MoveTo(Vector3 ePos, Quaternion eRot) {
@@ -73,7 +76,7 @@ public class CardBartok : Card {
 
 					// update state
 					if (state == CBState.toHand) state = CBState.hand;
-					if (state == CBState.toTarget) state = CBState.toTarget; // typo?
+					if (state == CBState.toTarget) state = CBState.target;
 					if (state == CBState.to) state = CBState.idle;
 
 					// move to end
@@ -96,6 +99,15 @@ public class CardBartok : Card {
 
 					Quaternion rotQ = Utils.Bezier(uC, bezierRots);
 					transform.rotation = rotQ;
+
+					if (u > 0.5f && spriteRenderers[0].sortingOrder != eventualSortOrder) {
+						// Jump to the proper sort order
+						SetSortOrder(eventualSortOrder);
+					}
+					if (u > 0.75f && spriteRenderers[0].sortingLayerName != eventualSortLayer) {
+						// Jump to the proper sort layer
+						SetSortingLayerName(eventualSortLayer);
+					}
 
 				}
 				break;
