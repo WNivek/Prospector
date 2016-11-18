@@ -71,3 +71,21 @@ TagManager:
   - name: 10
     uniqueID: 2134299829
     locked: 0
+  - name: Row0
+    uniqueID: 2001141879
+    locked: 0
+  - name: Row1
+    uniqueID: 3750865685
+    locked: 0
+  - name: Row2
+    uniqueID: 1667157159
+    locked: 0
+  - name: Row3
+    uniqueID: 2637445533
+    locked: 0
+  - name: Discard
+    uniqueID: 1317045073
+    locked: 0
+  - name: Draw
+    uniqueID: 3495641115
+    locked: 0
